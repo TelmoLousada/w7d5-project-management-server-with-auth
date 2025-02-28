@@ -4,9 +4,10 @@ const mongoose = require("mongoose");
 
 const Task = require("../models/Task.model");
 const Project = require("../models/Project.model");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 //  POST /api/tasks  -  Creates a new task
-router.post("/tasks", (req, res, next) => {
+router.post("/tasks", isAuthenticated, (req, res, next) => {
   const { title, description, projectId } = req.body;
 
   Task.create({ title, description, project: projectId })
@@ -21,5 +22,6 @@ router.post("/tasks", (req, res, next) => {
       res.status(500).json({ message: "Error while creating the task" });
     });
 });
+
 
 module.exports = router;
